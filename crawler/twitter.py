@@ -28,19 +28,21 @@ def SafeStr(o):
 
 
 
+# COMMENT: this thread runs until 
 def CrawlFavTweet(api):
     userid = api.me().id
     userobj = User.objects.get(id=userid)
-    output_filename = fav + '_' + str(userobj.id) + '_' + str(int(time.time())) + '.csv'
-    output_dir = '/cdn/tw/tweet/'
+    output_filename = 'fav_' + str(int(time.time())) + '.csv'
+    output_dir = '/cdn/tw/archive/' + str(userobj.id) + '/'
     output_path = output_dir + output_filename
-    archiveobj = Archive.objects.create(
+    archiveobj = Task.objects.create(
         output = output_filename,
         user = userobj,
         archivetype = 'fav',
-        status = 'Preparing ...',
+        message = 'Preparing ...',
         total = api.me().favourites_count,
-        current = 0
+        current = 0,
+        status = 0
         )
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -57,6 +59,12 @@ def CrawlFavTweet(api):
         ])
 
     while True:
+# task could be stopped in real-time,
+# so always refresh object to get current task status
+        archiveobj.refresh_from_db()
+        if (archiveobj.status != 0):
+            break
+
         try:
             results = api.favorites(userid)
             if results:
@@ -81,22 +89,21 @@ def CrawlFavTweet(api):
                     api.destroy_favorite(r.id)
 # update db
                 archiveobj.current += 1
-                archiveobj.status = str(archiveobj.current) + ' / ' + str(archiveobj.total)
+                archiveobj.message = str(archiveobj.current) + ' / ' + str(archiveobj.total)
             else:
-                print "No more favorites! parsing end!"
+                archiveobj.message = "No more favorites! parsing end!"
                 break
+            archiveobj.save()
         except RateLimitError:
-            archiveobj.status = 'Api limit, rest for a while ...'
+            archiveobj.message = 'Api limit, rest for a while ...'
+            archiveobj.save()
             time.sleep(600)  # about 10min
 
-
-
-
+    archiveobj.status = 1   # finished successfully
 
 
 # crawl all images from api, and pack it into zip file.
 # you must have crawled csv file.
-# TODO
 def CrawlImages(api):
     userid = api.me().id
 

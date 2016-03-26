@@ -10,4 +10,6 @@ urlpatterns = [
 
     url(r'^api/status/(?P<userid>[0-9])/$', views.api_getstatus),
     url(r'^api/testtwit/$', views.api_testtwit),
+    url(r'^api/taskstop/$', views.api_taskstop),
+    url(r'^api/favcrawler/$', views.api_favcrawler),
 ]

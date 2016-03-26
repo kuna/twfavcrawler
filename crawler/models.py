@@ -7,6 +7,8 @@ class User(models.Model):
     id = models.IntegerField(primary_key=True)
     screen_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
+    token = models.CharField(max_length=100)
+    token_secret = models.CharField(max_length=100)
     
 class Task(models.Model):
     output = models.CharField(max_length=100, primary_key=True)         # output filename of archive file

@@ -56,13 +56,15 @@ $(function() {
 
 	setInterval(2000, function () {
 		// crawl current status from server
-		$.getJSON("/api/getstatus/" + userid + "/", {
+		$.getJSON("/api/status/" + userid + "/", {
 		})
 		.done(function (data) {
 			if (data.success == 1) {
 				var valuer = data.value;
 				var msg = data.message;
-				$("#progress_bar").css('width', valeur+'%').attr('aria-valuenow', valeur);
+				if (valuer != undefined) {
+					$("#progress_bar").css('width', valeur+'%').attr('aria-valuenow', valeur);
+				}
 				$("#progress_status").html(msg);
 			} else {
 				console.log("not successed to getstatus");

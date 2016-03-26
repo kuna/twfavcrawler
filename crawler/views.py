@@ -13,7 +13,14 @@ def dashboard(request):
     token = request.session.get('access_token')
     if (token == None):
         return redirect('/auth/')
-    return render(request, "dashboard.htm")
+    try:
+        user_obj = User.objects.get(token=token[0])
+        return render(request, "dashboard.htm", {
+            "userid": user_obj.id,
+            "username": user_obj.name,
+            })
+    except:
+        return HttpResponse('user cannot found', status=500)
 
 
 
@@ -38,13 +45,15 @@ def auth(request):
 # save access token   
         access_token = (auth.access_token, auth.access_token_secret)
         request.session['access_token'] = access_token
-# save user id to DB
+# save user id, name, tokens to DB
         api = twitter.CreateApi(auth, access_token)
         user_obj = api.me()
         User.objects.update_or_create(
             id=user_obj.id,
             screen_name=user_obj.screen_name,
-            name=user_obj.name
+            name=user_obj.name,
+            token=access_token[0],
+            token_secret=access_token[1]
         )
         return redirect('/dashboard/')
 
@@ -59,29 +68,67 @@ def logout(request):
 def api_getstatus(request, userid):
     try:
         userobj = User.objects.get(id=userid)
-        task = Task.objects.filter(user=userobj).latest('date')
+        task = Task.objects.filter(user=userobj, status=0).latest('date')
         if (task):
             return JsonResponse({'success': 1,
-                'message': str(task.current) + ' / ' + str(task.total)})
+                'message': task.message,
+                'value': task.current / task.total})
         else:
-            return JsonResponse({'success': 1,
+            return JsonResponse({'success': 0,
                 'message': 'No task exists.'})
     except:
-        return JsonResponse({'success': 0,
-            'message': 'Invalid User'})
+        return jsonresponse({'success': 0,
+            'message': 'invalid user'})
 
 # make test tweet
 def api_testtwit(request):
     token = request.session.get('access_token')
     if (token == None):
-        return redirect('/auth/')
+        return JsonResponse({'success': 0,
+            'message': 'login please'})
     api = twitter.CreateApi(token)
 
     success = 0
     if api.id:
         success = api.id
-    return JsonResponse({'success': success})
+    return JsonResponse({'success': success,
+        'message': 'ok'})
+
+# just make task stop
+# TODO what task? - currently most recent one.
+def api_taskstop(request):
+    try:
+        userobj = User.objects.get(id=userid)
+        task = Task.objects.filter(user=userobj, status=0).latest('date')
+        if (task):
+            task.status = 2
+            task.save()
+            return JsonResponse({'success': 1,
+                'message': 'Stopped task successfully'})
+        else:
+            return JsonResponse({'success': 0,
+                'message': 'No task exists.'})
+    except:
+        return jsonresponse({'success': 0,
+            'message': 'invalid user'})
 
 # make job
 def api_favcrawler(request):
-    return JsonResponse({'success': 'under construction'})
+    token = request.session.get('access_token')
+    if (token == None):
+        return JsonResponse({'success': 0,
+            'message': 'login please'})
+    api = twitter.CreateApi(token)
+
+    try:
+        userobj = User.objects.get(id=userid)
+        task = Task.objects.filter(user=userobj, status=0).latest('date')
+        if (task == None):
+            twitter.Task_CrawlFavTweet(api)
+            return JsonResponse({'success': 1,
+                'message': 'Stopped task successfully'})
+        else:
+            return JsonResponse({'success': 0,
+                'message': 'Currently running task exists!'})
+    except:
+        return JsonResponse({'success': 'under construction'})
