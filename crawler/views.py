@@ -44,7 +44,7 @@ def logout(request):
 	return redirect('/')
 
 # make test tweet
-def twit_test(request):
+def api_testtwit(request):
 	token = request.session.get('access_token')
 	if (token == None):
 		return redirect('/auth/')
@@ -54,3 +54,6 @@ def twit_test(request):
 		success = api.id
 	return JsonResponse({'success': success})
 
+# make job
+def api_favcrawler(request):
+    return JsonResponse({'success': 'under construction'})
