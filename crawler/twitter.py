@@ -4,10 +4,12 @@ import csv
 
 # a private function
 def CreateBasicAuth():
-	auth = tweepy.OAuthHandler(private.consumer_key, private.consumer_secret)
+	auth = tweepy.OAuthHandler(private.consumer_token, private.consumer_secret)
+        return auth
 
-def CreateApi(auth, access_token, access_token_secret):
-	auth.set_access_token(access_token, access_token_secret)
+def CreateApi(auth, access_token):
+        print access_token
+	auth.set_access_token(access_token[0], access_token[1])
 	api = tweepy.API(auth)
 	return api
 
