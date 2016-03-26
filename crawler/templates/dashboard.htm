@@ -3,12 +3,38 @@
 <head>
 </head>
 <body>
-<p>Twitter archive will be removed within 30 days, so please get your archive file in hurry!</p>
-<p><a href="#" id="twit_favcrawler">FavCrawler</a></p>
-<p><a href="#" id="twit_piccrawler">PicCrawler</a></p>
-<p><a href="#" id="twit_regexfind">Regex Finder</a></p>
-<p><a href="#" id="twit_static">See Static (of archive)</a></p>
-<p><a href="#" id="twit_test">Test</a></p>
-<p><a href="/logout/" id="logout">Logout</a></p>
+	<div class="row status">
+		<h3>Hello, @{{ userid }}</h3>
+		<p>current status: <span id="status">Please wait ...</span></p>
+	</div>
+
+	<div class="row archive">
+		<h3>Twitter archive will be removed within 30 days, so please get your archive file in hurry!</h3>
+		<div class="favarchive">
+			<p>favorite archives</p>
+			<ul>
+				{% for fav in favarchive %}
+				<a href="{{ fav.url }}"><li>{{ fav.name }}</li></a>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="picarchive">
+			<p>picture archives</p>
+			<ul>
+				{% for pic in favarchive %}
+				<a href="{{ pic.url }}"><li>{{ pic.name }}</li></a>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="menu">
+		<p><a href="#" id="twit_favcrawler">FavCrawler</a></p>
+		<p><a href="#" id="twit_piccrawler">PicCrawler</a></p>
+		<p><a href="#" id="twit_regexfind">Regex Finder</a></p>
+		<p><a href="#" id="twit_static">See Static (of archive)</a></p>
+		<p><a href="#" id="twit_test">Test</a></p>
+		<p><a href="/logout/" id="logout">Logout</a></p>
+	</div>
 </body>
 </html>
