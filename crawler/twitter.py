@@ -12,11 +12,6 @@ def CreateApi(auth, access_token, access_token_secret):
 	return api
 
 
-
-def TwitHello(api):
-# do something with api (hello)
-	api.update_status('test!')
-
 # TODO: save progress for look at
 # TODO: save csv file
 status_crawl_twit = {}
