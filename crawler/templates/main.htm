@@ -1,6 +1,143 @@
+{% load static from staticfiles %}
+
 <html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Grayscale - Start Bootstrap Theme</title>
+
+		<!-- Bootstrap Core CSS -->
+		<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+
+		<!-- Custom CSS -->
+		<link href="{% static "css/grayscale.css" %}" rel="stylesheet">
+
+		<!-- Custom Fonts -->
+		<link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+		<link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+		<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+		<!-- Navigation -->
+		<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+						<i class="fa fa-bars"></i>
+					</button>
+					<a class="navbar-brand page-scroll" href="#page-top">
+						<i class="fa fa-play-circle"></i>  <span class="light">Start</span> Bootstrap
+					</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+					<ul class="nav navbar-nav">
+						<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+						<li class="hidden">
+							<a href="#page-top"></a>
+						</li>
+						<li>
+							<a class="page-scroll" href="#about">About</a>
+						</li>
+						<li>
+							<a class="page-scroll" href="#dashboard">Start</a>
+						</li>
+						<li>
+							<a class="page-scroll" href="#contact">Contact</a>
+						</li>
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container -->
+		</nav>
+
+		<!-- Intro Header -->
+		<header class="intro">
+			<div class="intro-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+							<h1 class="brand-heading">Twitter Archiver</h1>
+							<p class="intro-text">트위터 페이버릿 및 이미지 등을 쉽게 정리하세요!</p>
+							<a href="#about" class="btn btn-circle page-scroll">
+								<i class="fa fa-angle-double-down animated"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<!-- About Section -->
+		<section id="about" class="container content-section text-center">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2">
+					<h2>About Twitter Archiver</h2>
+					<p>@lazykuna가 심심풀이로 만들어 본 twitter archive 관리 사이트입니다. 아무런 광고나 계정도용, 혹은 개인정보를 수집과 같은 행위를 하지 않는 클-린함을 보장해 드립니다.</p>
+					<p>이 사이트는 상업적 용도가 아닌 개인적 용도로 구동되고 있으며, MIT License로 코드가 공개되고 있습니다. <a href="#">Github</a>에서 코드를 만나보세요.</p>
+					<p>이 사이트는 bootstrap, GrayScale theme를 사용하고 있으며, nginx / django / tweepy 라이브러리를 사용하여 작동되고 있습니다.</p>
+					<p>이 사이트의 기능은 불완전하거나 언제든지 바뀔 수 있으며, 이를 이용함으로서 생기는 모든 책임은 전적으로 사용자 본인에게 있습니다. 괜히 백업 같은거 하다가 파일 망가져도 책임 못 진다고요 ...</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Download Section -->
+		<section id="dashboard" class="content-section text-center">
+			<div class="download-section">
+				<div class="container">
+					<div class="col-lg-8 col-lg-offset-2">
+						<h2>Start Twitter Archiver!</h2>
+						<p>아래 버튼을 누르면 대시보드로 이동합니다.</p>
+						<a href="/dashboard/" class="btn btn-default btn-lg">Start Auth using Twitter Account</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Contact Section -->
+		<section id="contact" class="container content-section text-center">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2">
+					<h2>Contact</h2>
+					<p>Email : kgdgwn98 [at] gmai1.com / Twitter : @lazykuna</p>
+					<p>Make a donation!</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Map Section -->
+		<div id="map"></div>
+
+		<!-- Footer -->
+		<footer>
+			<div class="container text-center">
+				<p>Copyright &copy; Your Website 2014</p>
+			</div>
+		</footer>
+
+		<!-- jQuery -->
+		<script src="{% static "js/jquery.js" %}"></script>
+
+		<!-- Bootstrap Core JavaScript -->
+		<script src="{% static "js/bootstrap.min.js" %}"></script>
+
+		<!-- Plugin JavaScript -->
+		<script src="{% static "js/jquery.easing.min.js" %}"></script>
+
+		<!-- Custom Theme JavaScript -->
+		<script src="{% static "js/grayscale.js" %}"></script>
+	</body>
 </html>
-<body>
-<p>Hello!</p>
-<p><a href="/dashboard/">Start Auth using Twitter Account</a></p>
-</body>
