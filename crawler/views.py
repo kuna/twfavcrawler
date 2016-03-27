@@ -84,7 +84,7 @@ def api_getstatus(request, userid):
             'message': 'invalid user'})
 
 # make test tweet
-def api_testtwit(request):
+def api_testtwit(request, userid):
     token = request.session.get('access_token')
     if (token == None):
         return JsonResponse({'success': 0,
@@ -96,24 +96,32 @@ def api_testtwit(request):
 
 # just make task stop
 # TODO what task? - currently most recent one.
-def api_taskstop(request):
+def api_taskstop(request, userid):
+    token = request.session.get('access_token')
+    if (token == None):
+        return JsonResponse({'success': 0,
+            'message': 'login please'})
+
     try:
         userobj = User.objects.get(id=userid)
-        task = Task.objects.filter(user=userobj, status=0).latest('date')
-        if (task):
+        task = Task.objects.filter(user=userobj, status=0)
+        if (task.count() > 0):
+            task = task.latest('date')
             task.status = 2
+            task.message = "Stopped"
             task.save()
             return JsonResponse({'success': 1,
                 'message': 'Stopped task successfully'})
         else:
             return JsonResponse({'success': 0,
                 'message': 'No task exists.'})
-    except:
-        return jsonresponse({'success': 0,
-            'message': 'invalid user'})
+    except Exception as e:
+        raise e
+#        return JsonResponse({'success': 0,
+#            'message': 'invalid user'})
 
 # make job
-def api_favcrawler(request):
+def api_favcrawler(request, userid):
     token = request.session.get('access_token')
     if (token == None):
         return JsonResponse({'success': 0,
@@ -122,13 +130,14 @@ def api_favcrawler(request):
 
     try:
         userobj = User.objects.get(id=userid)
-        task = Task.objects.filter(user=userobj, status=0).latest('date')
-        if (task == None):
-            twitter.Task_CrawlFavTweet(api)
+        task = Task.objects.filter(user=userobj, status=0)
+        if (task.count() == 0 and twitter.Task_CrawlFavTweet(api)):
             return JsonResponse({'success': 1,
-                'message': 'Stopped task successfully'})
+                'message': 'Started task successfully'})
         else:
             return JsonResponse({'success': 0,
                 'message': 'Currently running task exists!'})
-    except:
-        return JsonResponse({'success': 'under construction'})
+    except Exception as e:
+        raise e
+#        return JsonResponse({'success': 0,
+#            'message': 'under construction'})

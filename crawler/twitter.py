@@ -35,15 +35,16 @@ def CrawlFavTweet(api):
     output_filename = 'fav_' + str(int(time.time())) + '.csv'
     output_dir = '/cdn/tw/archive/' + str(userobj.id) + '/'
     output_path = output_dir + output_filename
-    archiveobj = Task.objects.create(
+    archiveobj = Task(
         output = output_filename,
         user = userobj,
-        archivetype = 'fav',
+        type = 'fav',
         message = 'Preparing ...',
         total = api.me().favourites_count,
         current = 0,
         status = 0
         )
+    archiveobj.save()
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     csvfile = csv.writer(open(output_path, 'wb'), delimiter=',')
@@ -66,13 +67,15 @@ def CrawlFavTweet(api):
             break
 
         try:
-            results = api.favorites(userid)
+            # first try test
+            results = api.favorites()
             if results:
                 for r in results:
-                    tweetdate = r.created_at
+                    print '[TEST] ' + str(r.id) + ' - ' + r.text.encode('utf8')
+                    #print(dir(r))
                     ret_stat_id = ''
                     ret_stat_user_id = ''
-                    if (r.retweeted_status):
+                    if (hasattr(r, 'retweeted_status')):
                         ret_stat_id = r.retweeted_status.id
                         ret_stat_user_id = r.retweeted_status.user.id
                     line = [
@@ -98,8 +101,12 @@ def CrawlFavTweet(api):
             archiveobj.message = 'Api limit, rest for a while ...'
             archiveobj.save()
             time.sleep(600)  # about 10min
+        except TweepError as e:
+            print e.response
+            break
 
     archiveobj.status = 1   # finished successfully
+    archiveobj.save()
 
 
 # crawl all images from api, and pack it into zip file.
@@ -114,13 +121,7 @@ for tweet in public_tweets:
 	print tweet.text
 """
 
-# workers here!
-task_workers = {}
-def Task_CrawlFavTweet(name, api):
-    if (task_workers[name] == None or
-        not task_workers[name].isAlive()):
-        task_workers[name] = threading.Thread(target=CrawlFavTweet, args=[api])
-        task_workers[name].start()
-        return True
-    else:
-        return False
+def Task_CrawlFavTweet(api):
+    t = threading.Thread(target=CrawlFavTweet, args=[api])
+    t.start()
+    return True

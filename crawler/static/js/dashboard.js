@@ -1,11 +1,11 @@
 $(function() {
 	$('#task_favcrawler').click(function (e) {
 		// favorite crawling start
-		$.getJSON("/api/favcrawler/", {
+		$.getJSON("/api/favcrawler/" + userid + "/", {
 			del: 1,
 		})
 		.done(function (data) {
-			alert(data);
+			alert(data.message);
 		})
 		.fail(function () {
 			alert("failed to call ajax api!");
@@ -14,10 +14,10 @@ $(function() {
 
 	$('#task_piccrawler').click(function (e) {
 		// pic crawling start
-		$.getJSON("/api/piccrawler/", {
+		$.getJSON("/api/piccrawler/" + userid + "/", {
 		})
 		.done(function (data) {
-			alert(data);
+			alert(data.message);
 		})
 		.fail(function () {
 			alert("failed to call ajax api!");
@@ -36,7 +36,7 @@ $(function() {
 		$.getJSON("/api/testtwit/", {
 		})
 		.done(function (data) {
-			alert(data);
+			alert(data.message);
 		})
 		.fail(function () {
 			alert("failed to call ajax api!");
@@ -44,10 +44,10 @@ $(function() {
 	});
 
 	$('#task_stop').click(function (e) {
-		$.getJSON("/api/taskstop/", {
+		$.getJSON("/api/taskstop/" + userid + "/", {
 		})
 		.done(function (data) {
-			alert(data);
+			alert(data.message);
 		})
 		.fail(function () {
 			alert("failed to call ajax api!");
@@ -60,9 +60,9 @@ $(function() {
 		})
 		.done(function (data) {
 			if (data.success == 1) {
-				var valuer = data.value;
+				var valeur = data.value;
 				var msg = data.message;
-				if (valuer != undefined) {
+				if (valeur != undefined) {
 					$("#progress_bar").css('width', valeur+'%').attr('aria-valuenow', valeur);
 				}
 				$("#progress_status").html(msg);
