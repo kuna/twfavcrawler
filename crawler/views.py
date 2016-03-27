@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-import models
+from models import *
 import twitter
 
 # -------------------------------
@@ -17,10 +17,11 @@ def dashboard(request):
         user_obj = User.objects.get(token=token[0])
         return render(request, "dashboard.htm", {
             "userid": user_obj.id,
-            "username": user_obj.name,
+            "username": user_obj.screen_name,
             })
-    except:
-        return HttpResponse('user cannot found', status=500)
+    except Exception as e:
+        raise e
+#        return HttpResponse('user cannot found', status=500)
 
 
 
@@ -48,6 +49,7 @@ def auth(request):
 # save user id, name, tokens to DB
         api = twitter.CreateApi(auth, access_token)
         user_obj = api.me()
+        request.session['twitter_id'] = user_obj.id
         User.objects.update_or_create(
             id=user_obj.id,
             screen_name=user_obj.screen_name,
@@ -68,16 +70,17 @@ def logout(request):
 def api_getstatus(request, userid):
     try:
         userobj = User.objects.get(id=userid)
-        task = Task.objects.filter(user=userobj, status=0).latest('date')
+        task = Task.objects.filter(user=userobj, status=0)
         if (task):
+            task = task.latest('date')
             return JsonResponse({'success': 1,
                 'message': task.message,
                 'value': task.current / task.total})
         else:
             return JsonResponse({'success': 0,
                 'message': 'No task exists.'})
-    except:
-        return jsonresponse({'success': 0,
+    except Exception as e:
+        return JsonResponse({'success': 0,
             'message': 'invalid user'})
 
 # make test tweet
@@ -87,11 +90,8 @@ def api_testtwit(request):
         return JsonResponse({'success': 0,
             'message': 'login please'})
     api = twitter.CreateApi(token)
-
-    success = 0
-    if api.id:
-        success = api.id
-    return JsonResponse({'success': success,
+    api.update_status('test - http://tw.insane.pe.kr')
+    return JsonResponse({'success': 1,
         'message': 'ok'})
 
 # just make task stop

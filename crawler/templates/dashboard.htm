@@ -79,25 +79,28 @@
             <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
+                <div class="sidebar-nav navbar-collapse collapse">
                     <ul class="nav" id="side-menu">
                         <li>
                             <a href="/dashboard/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="#" id=""><i class="fa fa-tasks fa-fw"></i> FavCrawler</a>
+                            <a href="#" id="task_favcrawler"><i class="fa fa-tasks fa-fw"></i> FavCrawler</a>
                         </li>
                         <li>
-                            <a href="#" id=""><i class="fa fa-tasks fa-fw"></i> PicCrawler</a>
+                            <a href="#" id="task_piccrawler"><i class="fa fa-tasks fa-fw"></i> PicCrawler</a>
                         </li>
                         <li>
-                            <a href="#" id=""><i class="fa fa-tasks fa-fw"></i> Regex Filter</a>
+                            <a href="#" id="task_regexfind"><i class="fa fa-tasks fa-fw"></i> Regex Filter</a>
                         </li>
                         <li>
-                            <a href="#" id=""><i class="fa fa-tasks fa-fw"></i> Tweet Report 만들기</a>
+                            <a href="#" id="task_static"><i class="fa fa-tasks fa-fw"></i> Tweet Report 만들기</a>
                         </li>
                         <li>
-                            <a href="#" id=""><i class="fa fa-tasks fa-fw"></i> 테스트 (test용도)</a>
+                            <a href="#" id="task_upload"><i class="fa fa-tasks fa-fw"></i> Csv File Upload</a>
+                        </li>
+                        <li>
+                            <a href="#" id="task_test"><i class="fa fa-tasks fa-fw"></i> 테스트 (test용도)</a>
                         </li>
                         <li>
                             <a href="/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -113,10 +116,10 @@
 	<div id="page-wrapper">
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">안녕하세요, @{{ userid }}님 :)</h1>
+				<h1 class="page-header">안녕하세요, @{{ username }}님 :)</h1>
 				<p>Current Status</p>
 				<div class="progress progress-striped active">
-					<div id="progress_bar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+					<div id="progress_bar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
 						<span id="progress_status" class="sr-only">Please wait ...</span>
 					</div>
 				</div>

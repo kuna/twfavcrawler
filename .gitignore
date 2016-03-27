@@ -1,5 +1,6 @@
 *~
 *.pyc
 *.bak
+*.swp
 private.py
 *.sqlite3

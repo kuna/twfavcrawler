@@ -11,10 +11,14 @@ class User(models.Model):
     token_secret = models.CharField(max_length=100)
     
 class Task(models.Model):
-    output = models.CharField(max_length=100, primary_key=True)         # output filename of archive file
+    output = models.CharField(max_length=100)         # output filename of archive file
+    type = models.CharField(max_length=20)       # (pic, fav, all)
     date = models.DateTimeField(default=timezone.now)   # date of archive file saved
     user = models.ForeignKey(User)                     # mostly token of owner
-    archivetype = models.CharField(max_length=20)       # (pic, fav, all)
     status = models.CharField(max_length=50)            # current status (twit id or ...)
     total = models.IntegerField()                       # total things to be processed
     current = models.IntegerField()                     # currently processed
+
+class Log(models.Model):
+    task = models.ForeignKey(Task)
+    message = models.CharField(max_length=200)

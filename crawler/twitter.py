@@ -1,7 +1,7 @@
 import tweepy
 import private
 import csv
-import models
+from models import *
 import time
 import threading
 import os
@@ -12,8 +12,8 @@ def CreateBasicAuth():
     auth = tweepy.OAuthHandler(private.consumer_token, private.consumer_secret)
     return auth
 
-def CreateApi(auth, access_token):
-    print access_token
+def CreateApi(access_token):
+    auth = CreateBasicAuth()
     auth.set_access_token(access_token[0], access_token[1])
     api = tweepy.API(auth)
     return api

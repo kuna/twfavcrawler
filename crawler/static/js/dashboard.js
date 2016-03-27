@@ -54,7 +54,7 @@ $(function() {
 		});
 	});
 
-	setInterval(2000, function () {
+	setInterval(function () {
 		// crawl current status from server
 		$.getJSON("/api/status/" + userid + "/", {
 		})
@@ -73,5 +73,5 @@ $(function() {
 		.fail(function () {
 			console.log("failed to retrieve status of user " + userid);
 		});
-	});
+	}, 2000);
 });
